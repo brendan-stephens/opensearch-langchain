@@ -2,13 +2,13 @@
 
 The idea of this repo is to share an approach on how to query your knowledge base by simply using natural language, leveraging an Aiven OpenSearch service, as vector database, and LangChain framework.
 
-## What is a Vector Dataabse?
+## What is a Vector Databse?
 
 A vector database is like a library that stores numbers called "vectors," which are special codes that describe things like pictures, words, or sounds. Instead of just looking up exact matches, this library helps find things that are similar. For example, if you search for a picture of a cat, it can show you pictures of other cats or animals that look alike, even if they’re not the same exact picture.
 
 ## What is Embedding?
 
-An embedding is a way to turn things like words, pictures, or sounds into a set of numbers that computers can understand. It’s like giving each word or picture a unique "code" that tells the computer what it means. For example, the words "dog" and "puppy" might have codes that are very close to each other because they mean similar things. This helps computers compare and find related ideas easily.
+An embedding is a way to turn things like words, pictures, or sounds into a set of numbers that evaluated mathmatically. It’s like giving each word or picture a unique "code". For example, the words "dog" and "puppy" might have codes that are very close to each other because they mean similar things. This helps computers compare and find related ideas easily.
 
 ```mermaid
 graph TD
@@ -46,7 +46,7 @@ We can use the `langchain` libraries to do the work here.
 from langchain.schema import Document                   # The main LangChain library for chaining models together.
 ```
 
-# Open-source Embedding (from hugging-face hub)
+## Open-source Embedding (from hugging-face hub)
 
 ```
 from langchain_huggingface import HuggingFaceEmbeddings # The Hugging Face embeddings for generating embeddings.
@@ -96,7 +96,7 @@ docsearch = OpenSearchVectorSearch.from_documents(
 )
 ```
 
-# Test the Vector Database (`vectors.py`):
+## Test the Vector Database (`vectors.py`):
 The retrieval function is to retrieve from the vector database the most relevant documents starting from a natural language user query.
 
 Query the knowledge base using natural language. The top most similar documents to the user query will be retrieved.
@@ -127,3 +127,58 @@ docsearch = OpenSearchVectorSearch.from_documents(
 Note that the quality of the retrieved results will also depend on the embedding model (LLM) used.
 
  In the example above it was used an open-source LLM coming from Hugging-Face hub, but you could try to compare with other embedding models.
+
+# Using this code sample...
+
+```
+.
+├── README.md
+├── provider.tf
+├── python
+│   ├── Dockerfile
+│   ├── requirements.txt
+│   └── vectors.py
+├── resources.tf
+└── variables.tf
+```
+
+The terraform provided here is configured to work with a docker (or podman) instance. 
+
+You'll want to configure am Aiven API Token as an environemnt variable. 
+
+Run `terraform init` to download the providers and stage the directory.
+
+Then `terraform plan --var aiven_api_token=$AIVEN_API_TOKEN` should show 3 resources:
+
+* Aiven Opensearch
+* Docker Image
+* Docker Container
+
+ ```
+Plan: 3 to add, 0 to change, 0 to destroy.
+```
+
+Finally, `terraform apply --var aiven_api_token=$AIVEN_API_TOKEN`
+
+Using the Aiven provider, terraform will configure an OpenSearch instance. 
+
+Once available, using the Docker provider, terraform will configure a python instance, install the libraries and run the script with the Opensearch service URI as an input variable. 
+
+Finally, it should show run a local command to watch the log output from the container:
+```
+docker logs python-container
+```
+
+If it doesn't appear right away, you can watch the output:
+`watch -n3 docker logs python-container`
+
+If everything has deployed correctly, you should see output similar to the following:
+
+```
+Using OpenSearch URL: https://<user>:<pass>@<hostanme>.aivencloud.com:22418
+Generate Embeddings...
+Testing Query: Hi World
+Results: Hello World!
+```
+
+In this instance, our query `Hi Word` most is most closely associated with our `Hello World!` docuemnt.
