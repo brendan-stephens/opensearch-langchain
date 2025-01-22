@@ -65,7 +65,8 @@ hf = HuggingFaceEmbeddings(
 The model is used to embed either the full collection of text documents or the on-the-fly human natural language queries.
 
 ## Ingestion (`vectors.py`):
-An example script to load and ingest your raw text documents into the vector database.
+An example script to load and ingest your raw text documents into the vector database.<br>
+This example uses a static list of sample documents, but could be a pipleline for injestion: documents, messages, ...
 
 ```
 # Raw data as documents
