@@ -66,7 +66,7 @@ The model is used to embed either the full collection of text documents or the o
 
 ## Ingestion (`vectors.py`):
 An example script to load and ingest your raw text documents into the vector database.<br>
-This example uses a static list of sample documents, but could be a pipleline for injestion: documents, messages, ...
+This example uses a static list of sample documents, but could be a pipleline for ingestion: documents, messages, ...
 
 ```
 # Raw data as documents
