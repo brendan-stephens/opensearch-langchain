@@ -8,7 +8,7 @@ A vector database is like a library that stores numbers called "vectors," which 
 
 ## What is Embedding?
 
-An embedding is a way to turn things like words, pictures, or sounds into a set of numbers that evaluated mathmatically. It’s like giving each word or picture a unique "code". For example, the words "dog" and "puppy" might have codes that are very close to each other because they mean similar things. This helps computers compare and find related ideas easily.
+An embedding is a way to turn things like words, pictures, or sounds into a set of numbers that evaluated mathmatically. It’s like giving each word or picture a unique "code". For example, the words "dog" and "puppy" might have codes that are very close to each other because they mean similar things. This helps programs compare and find related ideas easily.
 
 ```mermaid
 graph TD
